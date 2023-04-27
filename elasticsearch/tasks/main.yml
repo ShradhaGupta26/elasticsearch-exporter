@@ -1,0 +1,38 @@
+- name: Download and unzip elasticsearch Exporter
+  unarchive:
+    src: "https://github.com/justwatchcom/elasticsearch_exporter/releases/download/v1.1.0/elasticsearch_exporter-1.1.0.linux-amd64.tar.gz"
+    dest: "/tmp/"
+    remote_src: yes
+    validate_certs: no
+
+- name: Create elasticsearch Exporter Directory
+  file:
+    path: "/opt/prometheus-apps/elasticsearch-exporter"
+    state: directory
+
+- name: move the binary to the final destination
+  copy:
+    src: "/tmp/elasticsearch_exporter-1.1.0.linux-amd64/elasticsearch_exporter"
+    dest: "/opt/prometheus-apps/elasticsearch-exporter"
+    mode: 0755
+    remote_src: yes
+
+- name: Install systemd service on Ubuntu
+  copy:
+    src: "elasticsearch_exporter.service"
+    dest: "/etc/systemd/system/elasticsearch_exporter.service"
+  notify: reload_daemon_and_restart elasticsearch_exporter
+
+- name: Start Elasticsearch Exporter
+  systemd:
+    name: elasticsearch_exporter
+    state: started
+    enabled: yes
+  notify: reload_daemon_and_restart elasticsearch_exporter
+
+    #- name: Configure Firewall
+    #firewalld:
+    #service: mongodb_exporter
+    #immediate: true
+    #state: enabled
+    #permanent: true

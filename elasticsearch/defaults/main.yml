@@ -1,0 +1,6 @@
+---
+# defaults file for elasticsearch
+elasticsearch_exporter_version: 1.2.0
+elasticsearch_exporter_install_dir: /opt/elasticsearch-exporter
+elasticsearch_exporter_elasticsearch_url: http://localhost:9200
+

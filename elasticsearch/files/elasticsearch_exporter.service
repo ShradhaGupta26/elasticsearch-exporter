@@ -1,0 +1,13 @@
+[Unit]
+Description=elasticsearch Exporter
+After=network.target
+
+[Service]
+User=root
+Type=simple
+ExecStart=/opt/prometheus-apps/elasticsearch-exporter/elasticsearch_exporter 
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
